@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux'
 import { toggleLogin } from '../actions/index.js'
+import { useNavigate } from "react-router-dom";
 
 const Login = ({dispatch}) => {
     // {username: , password: }
     const [ userInput, setUserInput ] = useState('');
+    const navigate = useNavigate();
 
     let authority = {
         'admin': '123',
@@ -22,6 +24,7 @@ const Login = ({dispatch}) => {
         event.preventDefault();
         if (authority[userInput.username] && userInput.password === authority[userInput.username]) {
             dispatch(toggleLogin());
+            navigate("/");
         }
         else alert("The username or password you entered is incorrect");
         setUserInput(''); 

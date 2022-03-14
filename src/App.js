@@ -1,51 +1,80 @@
-import React from 'react';
-//css
+import React, { Component } from 'react';
+import { Routes, Route, Navigate } from "react-router-dom";
+import Homepage from './components/Homepage';
 import './App.css'
-//containers
-import AddTodo from './containers/AddTodo'
-import VisibleTodoList from './containers/VisibleTodoList'
-import FilterToolbar from './components/FilterToolbar'
-import Login from './components/Login'
-import { connect } from 'react-redux'
-import { toggleLogin } from './actions/index.js'
+import Login from './components/Login';
 
-function App({isLogin, dispatch}) {
-  return (
-    <div className="App">
-      <header>
-        <h1>Todo list</h1>
-      </header>
 
-      {!isLogin &&
-        <Login />
-      }
+export default class App extends Component {
+	render() {
+		
+    const { store } = this.props;
 
-      {isLogin &&
-        <div className="container persistent-header">
-          <AddTodo />
-          <FilterToolbar />
-          <VisibleTodoList />
-          <button
-            type="button"
-            className="todo-list-item-button logout-btn"
-            onClick={() => {
-              alert('You have successfully logged out!');
-              dispatch(toggleLogin());
-            }}
-          > 
-            Logout 
-          </button>
-        </div>
-      }   
+		return (
+      <Routes>
 
-      <br/> 
-      <footer>Made by Lee Kim Min</footer>
-    </div>
-  );
+        <Route exact path="/" 
+          element = {
+            <RequireAuth store={store}>
+              <Homepage />
+            </RequireAuth>
+          }
+        />
+          
+        <Route path="/login" element={<Login />} />
+      
+        <Route
+          path="/*"
+          element={
+            <main style={{ padding: "1rem" }}>
+              <p>There's nothing here!</p>
+            </main>
+          }
+        />
+
+      </Routes>
+		);
+	}
 }
+function RequireAuth({ store, children }) {
 
-export default connect(
-  (state) => ({
-    isLogin: state.login
-  })
-)(App)
+	let auth = store.getState().login;
+
+  if (!auth) {
+    // Redirect them to the /login page
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+}
+// ***************************************************
+// 
+// https://github.com/remix-run/react-router/issues/8248
+// 
+// ---------------------------------------------------
+// <Route
+// path="/abc"
+// render={ ({ location }) => auth ? <Homepage /> : (
+// 	<Navigate
+// 	to={{
+// 		pathname: "/login",
+// 		state: { from: location }
+// 	}}/>
+// )
+// }/>
+// ---------------------------------------------------
+// <Route
+// path={'/mno'}
+// element={() => {
+// 	window.location = '/login';
+// 	return null;
+// }}
+// />
+// ---------------------------------------------------
+// let location = useLocation();
+// let renderContent;
+// if (auth) {
+//     renderContent = <Route path={'*'} component={Homepage} />;
+// } else {
+//     renderContent = <Route path={'/login'} component={Login} />;
+// }
