@@ -1,4 +1,24 @@
-# TODO APP #
+# 🔥 TODO APP 🔥  
+A simple todo web application  
+
+## Demo  
+Try out now on [minhly1.github.io](https://minhly1.github.io/)  
+
+Login infomation
+
+```json
+{
+"username": "password",
+"admin": "123",
+"mint": "123"
+}
+```
+
+## Screenshot  
+![Todo app](./assets/homepage.jpg)  
+
+
+<!-- # TODO APP # 
 
 ## 1. Branch [feature/add-ui](https://github.com/lykienminh0/todoapp/tree/feature/add-ui) ##  
 > Add UI to Redux
@@ -7,7 +27,7 @@
 > Use Redux + React
 
 ## 3. Branch [React](https://github.com/lykienminh0/todoapp/tree/react) ##  
-> Use React (state,...)
+> Use React (state,...) -->
 
 <!-- # Getting Started with Create React App
 
